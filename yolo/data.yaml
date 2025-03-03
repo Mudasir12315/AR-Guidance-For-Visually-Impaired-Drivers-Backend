@@ -1,0 +1,13 @@
+train: ../train/images
+val: ../valid/images
+test: ../test/images
+
+nc: 13
+names: ['bike', 'bus', 'car', 'green', 'left', 'noparking', 'red', 'right', 'speed', 'stop', 'textsignboard', 'truck', 'yellow']
+
+roboflow:
+  workspace: mudasir-ali
+  project: fyp_21
+  version: 2
+  license: CC BY 4.0
+  url: https://universe.roboflow.com/mudasir-ali/fyp_21/dataset/2
