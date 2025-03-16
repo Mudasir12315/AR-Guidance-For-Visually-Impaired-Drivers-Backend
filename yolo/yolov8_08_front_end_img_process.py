@@ -17,8 +17,11 @@ def detected_objects_from_front_end(image):
     matrix = np.load('./calibration_matrix/camera_matrix.npy')
     focal_length_pixels = matrix[0, 0]
 
-    # Initialize EasyOCR reader
-    reader = easyocr.Reader(['en'])
+    # Initialize EasyOCR reader only once
+    if not hasattr(detected_objects_from_front_end, "reader"):
+        detected_objects_from_front_end.reader = easyocr.Reader(['en'])
+
+    reader=detected_objects_from_front_end.reader
 
     # Load YOLO model
     if not hasattr(detected_objects_from_front_end, "model"):

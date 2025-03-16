@@ -24,6 +24,10 @@ def front_end_frame_detect():
         user_id = request.form['user_id']
         camera_mode = request.form['camera_mode']
 
+        # Validate user_id and camera_mode
+        if not user_id or not camera_mode:
+            return jsonify({"error": "user_id and camera_mode are required"}), 400
+
         if file.filename == '':
             return jsonify({"error": "No file selected"}), 400
 
@@ -77,7 +81,9 @@ def front_end_frame_detect():
         }), 201
 
     except Exception as e:
-        return jsonify({"error": str(e)}), 400
+        return jsonify({"error": str(e)}), 500
+    finally:
+        session.close()
 
 
 def get_logs(id):
