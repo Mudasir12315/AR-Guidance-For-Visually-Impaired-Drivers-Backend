@@ -1,8 +1,33 @@
-from ultralytics import YOLO
 import cv2
-import os
 import numpy as np
-import easyocr
+from easyocr import Reader
+from ultralytics import YOLO
+import os
+
+# Global variables to hold loaded models
+model = None
+reader = None
+
+
+def load_models():
+    global model, reader
+
+    # Load YOLO model
+    script_dir = os.path.dirname(__file__)
+    model_path = os.path.join(script_dir, 'best_3.pt')
+    model = YOLO(model_path)  # Or your actual model path
+
+    # Load EasyOCR reader
+    reader = Reader(['en'], gpu=False)  # Adjust languages as needed
+
+    # Warm up models with a dummy inference
+    dummy_image = np.zeros((100, 100, 3), dtype=np.uint8)
+    model.predict(dummy_image)
+    reader.readtext(dummy_image)
+
+    print("Models loaded and warmed up")
+
+
 know_width_cls={
     "laptop":0.3302,  # for our testing purpose
     "car":1.7,
@@ -13,23 +38,24 @@ know_width_cls={
 }
 
 def detected_objects_from_front_end(image):
+    global model, reader
     # Load camera calibration matrix
     matrix = np.load('./calibration_matrix/camera_matrix.npy')
     focal_length_pixels = matrix[0, 0]
 
     # Initialize EasyOCR reader only once
-    if not hasattr(detected_objects_from_front_end, "reader"):
-        detected_objects_from_front_end.reader = easyocr.Reader(['en'])
+    # if not hasattr(detected_objects_from_front_end, "reader"):
+    #     detected_objects_from_front_end.reader = easyocr.Reader(['en'])
 
-    reader=detected_objects_from_front_end.reader
+    # reader=detected_objects_from_front_end.reader
 
     # Load YOLO model
-    if not hasattr(detected_objects_from_front_end, "model"):
-        script_dir = os.path.dirname(__file__)
-        model_path = os.path.join(script_dir, 'best_3.pt')
-        detected_objects_from_front_end.model = YOLO(model_path)
-
-    model = detected_objects_from_front_end.model
+    # if not hasattr(detected_objects_from_front_end, "model"):
+    #     script_dir = os.path.dirname(__file__)
+    #     model_path = os.path.join(script_dir, 'best_3.pt')
+    #     detected_objects_from_front_end.model = YOLO(model_path)
+    #
+    # model = detected_objects_from_front_end.model
     detected_objects_list = []
 
     # Resize the image for YOLO processing

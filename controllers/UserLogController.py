@@ -56,6 +56,17 @@ def front_end_frame_detect():
                     img_path=processed_image_path,
                     camera_mode=camera_mode
                 )
+            elif obj['detected_object'] == "red":
+                user_log = UserLog(
+                    user_id=user_id,
+                    detected_object=obj['detected_object'],
+                    alert="Stop",
+                    distance=obj['distance'],
+                    date=datetime.now().date(),
+                    time=datetime.now().time(),
+                    img_path=processed_image_path,
+                    camera_mode=camera_mode
+                )
             else:
                 user_log = UserLog(
                     user_id=user_id,
@@ -79,7 +90,6 @@ def front_end_frame_detect():
             "camera_mode": camera_mode,
             "processed_image_url": processed_image_url
         }), 201
-
     except Exception as e:
         return jsonify({"error": str(e)}), 500
     finally:

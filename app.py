@@ -5,10 +5,16 @@ from controllers.UserController import authenticate_user,new_user,password_reset
 from controllers.UserPreferenceController import save_preferences,get_preference,update_preferences
 from models import create_tables
 from flask import send_from_directory
+from yolo.yolov8_08_front_end_img_process import load_models  # Add this import
 
 create_tables()
 app = Flask(__name__)
 CORS(app)
+
+# Load models when application starts
+load_models()
+print("Models loaded successfully!")
+
 
 @app.route('/login',methods=['POST'])
 def verify_user():
