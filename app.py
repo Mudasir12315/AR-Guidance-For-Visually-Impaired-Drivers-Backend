@@ -8,6 +8,7 @@ from flask import send_from_directory
 from yolo.yolov8_08_front_end_img_process import load_models  # Add this import
 
 create_tables()
+print("Tables created successfully!")
 app = Flask(__name__)
 CORS(app)
 
@@ -72,4 +73,4 @@ def update_user_pref(id):
     return result,status_code
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=5000,debug=True)
