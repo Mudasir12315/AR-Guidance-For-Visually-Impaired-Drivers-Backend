@@ -23,6 +23,8 @@ def front_end_frame_detect():
         file = request.files['file']
         user_id = request.form['user_id']
         camera_mode = request.form['camera_mode']
+        user_id=int(user_id)
+        camera_mode=int(camera_mode)
 
         # Validate user_id and camera_mode
         if not user_id or not camera_mode:

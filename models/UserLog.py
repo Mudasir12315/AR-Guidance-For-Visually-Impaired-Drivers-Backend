@@ -13,7 +13,7 @@ class UserLog(Base):
     date = Column(Date)
     time = Column(Time)
     img_path = Column(String(255))
-    camera_mode=Column(Integer) #0 for front view,1 for left,2 for right
+    camera_mode=Column(Integer) #0 for left mirror and 1 for right mirror
 
     # Relationships
     user = relationship("User", back_populates="logs")

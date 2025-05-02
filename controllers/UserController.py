@@ -75,7 +75,6 @@ def new_user():
         email= data.get('email')
         password = data.get('password')
         isLogOut = data.get('is_logout')
-        isLogOut=int(isLogOut)
         if not full_name or not email or not password:
             return jsonify({'Error':'All fields are required'}),400
         is_valid_email=session.query(User).filter(email==User.email).first()
