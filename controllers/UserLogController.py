@@ -8,6 +8,7 @@ from database import Session
 from datetime import datetime
 from models.UserLog import UserLog
 import os
+from sqlalchemy import desc
 
 
 def front_end_frame_detect():
@@ -126,6 +127,44 @@ def get_logs(id):
             })
 
         return jsonify({'message': data}), 200
+
+    except Exception as e:
+        return jsonify({'Error': str(e)}), 500
+    finally:
+        session.close()
+
+
+def get_latest_undisplayed_log(user_id):
+    session = Session()
+    try:
+        latest_log = session.query(UserLog).filter(
+            UserLog.user_id == user_id,
+            UserLog.is_displayed == False
+        ).first()
+
+        if latest_log:
+            # Mark as displayed
+            latest_log.is_displayed = True
+            session.commit()
+            session.refresh(latest_log)
+
+            # Manually serialize to JSON
+            log_data = {
+                'log_id': latest_log.log_id,
+                'user_id': latest_log.user_id,
+                'detected_object': latest_log.detected_object,
+                'alert': latest_log.alert,
+                'distance': latest_log.distance,
+                'date': latest_log.date.isoformat() if latest_log.date else None,
+                'time': latest_log.time.isoformat() if latest_log.time else None,
+                'img_path': latest_log.img_path,
+                'camera_mode': latest_log.camera_mode,
+                'is_displayed': latest_log.is_displayed
+            }
+
+            return jsonify({'message': log_data}), 200
+        else:
+            return jsonify({'message': "No data found"}), 201
 
     except Exception as e:
         return jsonify({'Error': str(e)}), 500

@@ -15,10 +15,10 @@ def load_models():
     # Load YOLO model
     script_dir = os.path.dirname(__file__)
     model_path = os.path.join(script_dir, 'best_5.pt')
-    model = YOLO(model_path)  # Or your actual model path
+    model = YOLO(model_path)
 
     # Load EasyOCR reader
-    reader = Reader(['en'], gpu=False)  # Adjust languages as needed
+    reader = Reader(['en'], gpu=False)
 
     # Warm up models with a dummy inference
     dummy_image = np.zeros((100, 100, 3), dtype=np.uint8)

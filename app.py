@@ -1,11 +1,11 @@
 from flask import Flask
 from flask_cors import CORS
-from controllers.UserLogController import front_end_frame_detect,get_logs
+from controllers.UserLogController import front_end_frame_detect,get_logs,get_latest_undisplayed_log
 from controllers.UserController import authenticate_user,new_user,password_reset,password_change,log_out
 from controllers.UserPreferenceController import save_preferences,get_preference,update_preferences
 from models import create_tables
 from flask import send_from_directory
-from yolo.yolov8_08_front_end_img_process import load_models  # Add this import
+from yolo.yolov8_08_front_end_img_process import load_models
 
 create_tables()
 print("Tables created successfully!")
@@ -45,6 +45,12 @@ def logOut(id):
 @app.route('/user_log/<int:user_id>',methods=['GET'])
 def user_log(user_id):
     result,status_code=get_logs(user_id)
+    return result,status_code
+
+
+@app.route('/hud_log/<int:user_id>',methods=['GET'])
+def hud_log(user_id):
+    result,status_code=get_latest_undisplayed_log(user_id)
     return result,status_code
 
 @app.route('/frontend/frames/detection', methods=['POST'])
