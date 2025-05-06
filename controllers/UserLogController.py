@@ -28,7 +28,7 @@ def front_end_frame_detect():
         camera_mode=int(camera_mode)
 
         # Validate user_id and camera_mode
-        if not user_id or not camera_mode:
+        if 'user_id' not in request.form or 'camera_mode' not in request.form:
             return jsonify({"error": "user_id and camera_mode are required"}), 400
 
         if file.filename == '':
