@@ -13,7 +13,7 @@ class UserLog(Base):
     date = Column(Date)
     time = Column(Time)
     img_path = Column(String(255))
-    camera_mode=Column(Integer) #0 for left mirror and 1 for right mirror
+    camera_mode=Column(Integer) #0 for left mirror,1 for right mirror and 2 for front mode
     is_displayed = Column(Boolean, default=False)  # New column to track if displayed
 
     # Relationships
